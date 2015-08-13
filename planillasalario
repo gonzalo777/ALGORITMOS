@@ -1,0 +1,29 @@
+// 7.cpp : main project file.
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+#define IVA 0.13
+#define AFP 0.121
+
+using namespace std;
+
+void main(){
+float salariob,salarion,resul;
+int promediog,i,n;
+cout<<"Ingrese el numero de trabajadores:\n";
+cin>>n;
+i++;
+while(i<n){
+cout<<"Ingrese el salario de la persona : \n";
+cin>>salariob;
+if(salariob>=2*salariob)
+salarion=salariob-(salariob*IVA-salariob*AFP);
+else
+	salarion=salariob;
+
+}promediog=promediog+salarion;
+resul=promediog/n;
+cout<<"El promedio es :\n "<<resul;
+getch();
+}
