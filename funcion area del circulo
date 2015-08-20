@@ -1,0 +1,23 @@
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace std;
+
+float areacirculo(float r);
+//programa principal
+void main(){
+float area,radio;
+cout<<"Ingrese el radio del circulo :";
+cin>>radio;
+area=areacirculo(radio);
+cout<<"el area del circulo es :"<<area;
+getch();
+}
+
+//funcion del area del circulo
+float areacirculo(float r){
+float a;
+a=3.1416*r*r;
+return a;
+}
