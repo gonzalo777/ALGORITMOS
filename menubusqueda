@@ -1,0 +1,202 @@
+#include "stdafx.h"
+#include "conio.h"
+#include <iostream>
+#include <string>
+#include "math.h"
+#include "stdlib.h"
+#define TAM 50
+
+using namespace std;
+
+void cargar_vector(int A[], int n);
+void cargar_vectors(string nombre[], int n);
+void mostrar_vector(int A[], int n);
+void ordenar_vector(int A[], int n);
+int busqueda_binaria(int A[], int n,int k);
+void arrays_paralelos(string nombre[], int nota[], int n);
+void mostrar_paralelos(string nombre[], int nota[], int n);
+void insercion();
+
+
+void main ()
+{
+	int op, n, sol, a,b, A[TAM],z,k;
+	string nombre[TAM];
+
+	do
+	{
+		cout<<"1 . Cargar Vector Entero "<<endl;
+		cout<<"2 . Cargar Vector String "<<endl;
+		cout<<"3 . Mostrar Vector Entero "<<endl;
+		cout<<"4 . Clasificar Vector Paralelo "<<endl;
+		cout<<"5 . Mostrar Vector Paralelo "<<endl;
+		cout<<"6 . Busqueda Binaria "<<endl;
+		cout<<"7 . Clasificacion por insercion "<<endl;
+		cout<<"0 . Salir"<<endl;
+		
+		cin>>op;
+
+		switch (op)
+		{
+		case 1: do {
+					cout<<"ingrese el numero de elementos: ";
+					cin>>n;
+				}
+				while ((n>TAM) || (n<0));
+				cargar_vector(A,n);
+				break;
+
+		case 2: do {
+					cout<<"ingrese el numero de elementos : ";
+					cin>>n;
+				}
+				while ((n>TAM) || (n<0));
+				cargar_vectors(nombre,n);
+				break;
+
+		case 3: 
+				mostrar_vector(A,n);
+				break;
+
+		case 4: 
+				arrays_paralelos(nombre, A, n);
+				break;
+
+		case 5: 
+				mostrar_paralelos(nombre, A, n);
+				break;
+				
+		case 6:
+			
+			cout<<"Ingrese el dato a buscar en el vector : "<<endl;
+			cin>>k;	
+			z=busqueda_binaria(A, n,k);
+				cout<<"el dato esta en la posicion: "<<z;
+				break;
+		case 7: insercion();
+		
+
+				break;
+				
+		case 0:
+				cout<<"fin del programa";
+				break;
+
+		default:
+				cout<<"opcion invalida :";
+				break;
+
+		}
+		getch();
+		system("cls");
+	}while (op!=0);
+}
+
+void cargar_vector(int A[], int n)
+{
+	for (int i=0; i<n; i++)
+	{
+		cout<<"A["<<i<<"] = ";
+		cin>>A[i];
+	}
+}
+
+void cargar_vectors(string nombre[], int n)
+{
+	cin.ignore();
+	for (int i=0; i<n; i++)
+	{
+		cout<<"nombre["<<i<<"] = ";
+		getline(cin, nombre[i]);
+	}
+}
+
+void mostrar_vector(int A[], int n)
+{
+	for (int i=0; i<n; i++)
+	{
+		cout<<"A["<<i<<"] = "<<A[i]<<endl;
+	}
+}
+
+void arrays_paralelos(string nombre[], int nota[], int n)
+{
+	int aux;
+	string auxs;
+	for (int i=0; i< n-1; i++)
+		for (int j=i+1; j<n; j++)
+			if (nombre[i] > nombre[j])
+			{
+				aux=nota[j];
+				nota[j]=nota[i];
+				nota[i]=aux;
+				auxs=nombre[j];
+				nombre[j]=nombre[i];
+				nombre[i]=auxs;
+
+			}
+}
+
+void mostrar_paralelos(string nombre[], int nota[], int n)
+{
+	cout<<"No. \t Nombre y Apellido \t Nota"<<endl;
+	cout<<"ªªªªªªªªªªªªªªªªªªªªªªªªªªªºªªªªªºªªªªªªªªªªª"<<endl;
+	for (int i=0; i<n; i++)
+		cout<<i+1<<" "<<nombre[i]<<"\t"<<nota[i]<<endl;
+
+}
+
+int busqueda_binaria(int A[], int n, int k)
+{
+  int fin = n-1,ini = 0,medio;
+  while (ini <= fin)
+    {
+      medio = (fin + ini)/2;
+      if (A[medio] == k)
+         return medio;
+      else
+         if (k < A[medio])
+            fin=medio-1;
+         else
+            ini=medio+1;
+    }
+  return -1;
+}
+
+void insercion()
+{
+int N,Aux,J,SW;
+int V[10];
+int I;
+
+
+cout<<"¿Cuantos numeros va a ingresar al vector?, maximo 10:";
+cin>>N;
+for(I=0; I<N; I++)
+{
+cout<<"Ingrese dato "<<I+1<<":";
+cin>>V[I];
+}
+for (I=1; I<N;I++)
+{
+Aux=V[I];
+J=I-1;
+SW=1;
+while (SW&&J>=0)
+{
+if (Aux<V[J])
+{
+V[J+1]=V[J];
+J--;
+}
+else
+SW=0;
+}
+V[J+1]=Aux;
+}
+cout<<"Los numeros de forma ordenada son:";
+for(I=0; I<N; I++)
+cout<<endl<<V[I];
+
+getch();
+}
