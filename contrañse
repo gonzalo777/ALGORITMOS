@@ -1,0 +1,44 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include "conio.h"
+
+using namespace std;
+
+bool verficacion(string c);
+
+
+void main(){
+string contraseña;
+cin.ignore();
+cout<<"Ingrese la contraseña";
+getline(cin,contraseña);
+
+verficacion(contraseña);
+getch();
+
+
+
+}
+
+bool verficacion(string c){
+int longitud,i;
+longitud=c.length():const;
+for(i=0;i<longitud;i++){
+	if((c[i]=='a')||(c[i]=='e')||(c[i]=='i')||(c[i]=='o')||(c[i]=='u')){
+		if(longitud<10){
+			cout<<"la contraseña es aceptada";
+			return (true);
+		
+		
+		}else
+			cout<<"contraseña invalida";
+			return(false);
+	
+	}else
+		cout<<"contraseña invalida";
+		return (false);
+
+}
+
+}
