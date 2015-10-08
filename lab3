@@ -1,0 +1,163 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+#include "conio.h"
+#include "stdlib.h"
+#define TAM 50
+#define MAXROW 20
+#define MAXCOL 20
+using namespace std;
+
+struct t_registro{
+	string nombre;
+	int telefono;
+
+
+
+};
+
+
+
+void registrar(int n);
+void clasificar(int n);
+void matriz(int n,int m,int mat[MAXROW][MAXCOL]);
+void mostrar(int n);
+void cargarmatriz(int n,int m,int mat[MAXROW][MAXCOL]);
+void mostrarmatriz(int n,int m,int mat[MAXROW][MAXCOL]);
+
+t_registro registro[TAM];
+
+void main(){
+	int op,n,m,mat[MAXROW][MAXCOL];
+	do{
+	cout<<"****MENU****\t"<<endl;
+	cout<<"1.-Registrar contactos (NOMBRE Y TELEFONO) :"<<endl;
+	cout<<"2.-Clasificar contactos por nombre"<<endl;
+	cout<<"3.-Matriz   "<<endl;
+	cout<<"0.-Salir"<<endl;
+	cin>>op;
+	
+	switch(op){
+	case 1:	
+			cout<<"Ingrese la cantidad de contactos a registrar: "<<endl;
+			cin>>n; 
+			registrar(n);
+
+		break;
+	case 2:
+		clasificar(n);
+			mostrar(n);
+		break;
+	case 3:
+		cout<<"Introducir las filas ";
+		cin>>n;
+		cout<<"Introducir columnas ";
+		cin>>m;
+		cargarmatriz(n,m,mat);
+		matriz(n,m,mat);
+		mostrarmatriz(n,m,mat);
+
+		break;
+	case 0:
+
+		cout<<"Saliendo del programa...:";
+		break;
+
+	default:
+
+		cout<<"opcion invalida!! ";
+	}
+	}while(op!=0);
+
+	system ("cls");
+	getch();
+	
+	
+	
+	}
+
+
+
+void registrar(int n){
+int i;
+for(i=0;i<n;i++){
+	cin.ignore();
+	cout<<"Ingrese el nombre del contacto :";
+	getline(cin,registro[i].nombre);
+	cout<<"Ingrese el numero telefonico del contacto :";
+	cin>>registro[i].telefono;
+
+}
+}
+
+void mostrar(int n){
+int i;
+for(i=0;i<n;i++){
+cout<<registro[i].nombre;
+
+cout<<registro[i].telefono<<"\t";
+
+}
+
+
+}
+void clasificar(int n){
+	int i,k,aux2;
+	string aux1;
+	for(i=0;i<n-1;i++){
+		for(k=i+1;k<n;k++){
+			if(registro[i].nombre>registro[k].nombre){
+			aux1=registro[i].nombre;
+			aux2=registro[i].telefono;
+			registro[i].nombre=registro[k].nombre;
+			registro[i].telefono=registro[k].telefono;
+			registro[k].nombre=aux1;
+			registro[k].telefono=aux2;
+
+			
+			
+			}
+		}
+	}
+
+}
+void cargarmatriz(int n,int m,int mat[MAXROW][MAXCOL]){
+int i,j;
+for(i=0;i<n;i++){
+	for(j=0;j<m;j++){
+	cout<<"Ingrese los elementos de la matriz : ";
+	cin>>mat[i][j];
+	
+	}
+}
+}
+void mostrarmatriz(int n,int m,int mat[MAXROW][MAXCOL]){
+int i,j;
+for(i=0;i<n;i++){
+	for(j=0;j<m;j++){
+	
+	cout<<" [ " <<mat[i][j]<<" ]";
+	}
+	cout<<endl;
+}
+}
+
+void matriz(int n,int m,int mat[MAXROW][MAXCOL]){
+	int i,j,k;
+	for(k=0;k<m,k++){
+	for(i=0;i<n;i++){
+	for(j=0;j<m;j++){
+	if(mat[i][j]<mat[i+1][j+1]){
+		mat[k][j]=mat[i][j];
+		mat[i][j]=mat[i+1][j+1];
+		mat[i+1][j+1]=mat[k][j];
+	}
+	}
+	cout<<endl;
+	}
+	}
+}
+
+
+
+
