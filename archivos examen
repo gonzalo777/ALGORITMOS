@@ -1,0 +1,167 @@
+#include <iostream>
+#include "conio.h"
+#include <string>
+#include "stdlib.h"
+
+using namespace std;
+
+struct t_amigo {
+	int registro;
+	string nombre;
+	int edad;
+
+
+};
+
+t_amigo amigo;
+FILE *alias;
+
+void llenar();
+void adicionar();
+void mostrar();
+void buscar();
+void clasificar();
+
+void main() {
+	int op;
+
+	do {
+		cout << "*******MENU*******";
+		cout << "1.-Llenar los datos de amigo al archivo" << endl;
+		cout << "2.-Adicionar un amigo al archivo" << endl;
+		cout << "3.-Mostrar el listado del archivo " << endl;
+		cout << "4.- Buscar a un amigo " << endl;
+		cout << "5.-Clasificar por edad el archivo " << endl;
+		cout << "	0.-Salir del programa" << endl;
+
+		cin >> op;
+		switch (op) {
+		case 1:
+			llenar();
+			break;
+		case 2:
+			adicionar();
+			break;
+		case 3:
+			mostrar();
+			break;
+		case 4:
+			buscar();
+			break;
+		case 5:
+			clasificar();
+			break;
+		case 0:
+			cout << "Saliendo del programa...";
+			break;
+		default:
+			cout << "Opcion invalida..!!!!";
+			break;
+		}
+		_getch();
+		system("cls");
+
+	} while (op != 0);
+
+}
+void llenar() {
+	int n, i;
+	alias = fopen("amigos.dat", "wb+");
+
+	if (alias != NULL) {
+		cout << "Cuantos amigos desea ingresar : ";
+		cin >> n;
+		while (i < n) {
+			cout << "Ingrese el registro del amigo :";
+			cin >> amigo.registro;
+			cin.ignore();
+			cout << "Ingrese el nombre del amigo :";
+			getline(cin, amigo.nombre);
+			cout << "Ingrese la edad del amigo :";
+			cin >> amigo.edad;
+			fwrite(&amigo, sizeof(amigo), 1, alias);
+			i++;
+		}
+	}
+	fclose(alias);
+}
+void adicionar() {
+	alias = fopen("amigos.dat", "ab+");
+	if (alias != NULL) {
+		cout << "Ingrese el registro del Tio :";
+		cin >> amigo.registro;
+		cin.ignore();
+		cout << "Ingrese el nombre del sobrino :";
+		getline(cin, amigo.nombre);
+		cout << "Ingrese la edad del Papa: ";
+		cin >> amigo.edad;
+		fwrite(&amigo, sizeof(amigo), 1, alias);
+
+	}
+	fclose(alias);
+
+}
+void mostrar() {
+	alias = fopen("amigos.dat", "rb");
+	if (alias != NULL) {
+		fread(&amigo, sizeof(amigo), 1, alias);
+		while (!feof(alias)) {
+			cout << amigo.registro;
+			cout <<"\t"<< amigo.nombre;
+			cout << "\t" << amigo.edad;
+			fread(&amigo, sizeof(amigo), 1, alias);
+
+		}
+	}
+	fclose(alias);
+}
+void buscar() {
+	int dir_fisica,numreg;
+
+	alias = fopen("amigos.dat", "rb+");
+	if (alias != NULL) {
+		cout << "Ingresad el dato ha buscar : ";
+		cin >> numreg;
+		dir_fisica = numreg*sizeof(amigo);
+		fseek(alias, dir_fisica, SEEK_SET);
+		fread(&amigo, sizeof(amigo), 1, alias);
+		if (numreg == amigo.registro) {
+			cout << amigo.registro;
+			cout << "\t" << amigo.nombre;
+			cout <<"\t "<< amigo.edad;
+
+		
+		}
+		else
+			cout << "El dato no existe!!!!";
+
+	}
+	fclose(alias);
+
+
+
+}
+void clasificar() {
+	int aux[20],aux1[20], aux3[20],i=0;
+	string aux2;
+	alias = fopen("amigos.dat", "rb+");
+	if (alias != NULL) {
+		fread(&amigo, sizeof(amigo), 1, alias);
+		while (!feof(alias)) {
+			
+			aux[i] = amigo.edad;
+			i++;
+			fread(&amigo, sizeof(amigo), 1, alias);
+			for (int j = 0; j < i - 1; j++) {
+				for (int k = j + 1; k < i; k++) {
+				
+				}
+			}
+		
+		
+		}
+	}
+
+fclose(alias)
+}
+FALTA COMPLETAR LA ULTIMA FUNCION
