@@ -1,0 +1,679 @@
+NOTA!!!!!!
+Abrir como:
+New Project--->>CLR Empty Project ----->CREAR EN CARPETA SOURCE UN ITEM---->Code (C++)
+SI ENTRA EN WIN32 CONSOLE APPLICATION , BORRAR "USING NAMESPACE SYSTEM"
+#include "conio.h"
+#include <iostream>
+#include "stdlib.h"
+#include "string.h"
+#include <string>	
+#include <iomanip>
+using namespace std;
+using namespace System;
+struct regproducto{
+	int idprod;
+	float precio;
+	char nombre[30];
+	char estado;
+};
+struct regventas{
+	int idventa;
+	int idprod;
+	int idcliente;
+	int cantidad;
+	float total;
+	char estado;
+};
+struct regcliente{
+	int idcliente;
+	int nit;
+	char nombre[30];
+	char estado;
+	char usuario[30];
+	char contra[20];
+};
+struct regusuario{
+	int idusuario;
+	int contra;
+	char nombre[30];
+	char estado;
+};
+struct regalmacen{
+	int idprod;
+	int cantidad;
+	char estado;
+};
+void leer_numero(char msg[], int& num);
+bool VerificacionAccesoCliente(char n[30],char c[20]);
+bool VerifExisteIdCliente(int id);
+bool VerifExisteIdProd(int id);
+bool VerifExisteIdVenta(int id);
+void adicionarClientes();
+void adicionarProductos();
+void adicionarVentas();
+void adicionarAlmacen();
+void mostrarClientes();
+void mostrarProductos();
+void mostrarVentas();
+void mostrarAlmacen();
+void eliminarClientes();
+void eliminarProductos();
+void eliminarAlmacen();
+void eliminarVentas();
+int buscarRegistro(int id, int prod);
+void modificarPedido();
+int obtenerPrecio(int id);
+void reportePedidoCliente(int id);
+void main(){
+	int id,SEL=0,i;
+	int opc,cant;
+	int op,op2,op3,op4,op5;
+	char na[30];
+	char ce[20];
+	char ri[20];
+	char uo[20];
+	char pu[20];
+	char no[30];
+	char ing;
+	do{
+		cout << endl << endl << setw(40)<< "******	PROYECTO FINAL	*********";
+		cout << endl << endl << "--------------------------------------------------";
+		cout << endl << endl << "********	LICOSMART	*********";
+		cout << endl << endl << "--------------------------------------------------";
+		cout << endl << "1.- Registrarse";
+		cout << endl << "2.- Ingresar";
+		cout << endl << "3.- Menu Adicionar";
+		cout << endl << "4.- Reporte de Pedidos";
+		cout << endl << "5.- Menu Mostrar";
+		cout << endl << "6.- Menu Eliminar";
+		cout << endl << "0.- SALIR";
+		cout << endl;
+		leer_numero("Seleccione la Opcion deseada: ",opc);
+		switch(opc){
+		case 1:
+			cout << endl;
+			adicionarClientes();
+			mostrarClientes();
+			break;
+		case 2:
+			cout << endl << "Introduzca Su nombre de usuario: ";
+			do{
+				gets(na);
+			}while(strlen(na)==0);
+			cout << endl << "Introduzca Su contrasenha: ";
+			do{
+				gets(ce);
+			}while(strlen(ce)==0);
+			if(VerificacionAccesoCliente(na,ce)==true){
+				do{
+					cout << endl << "*	*	*	MENU DE USUARIO	*	*	*";
+					cout << endl << "1.- Hacer Pedido";
+					cout << endl << "2.- Modificar Pedido";
+					cout << endl << "3.- Listar Pedido";
+					cout << endl << "4.- Cancelar Pedido";
+					cout << endl << "0.- SALIR";
+					cout << endl;
+					leer_numero("Seleccione la Opcion deseada: ",op2);
+					switch(op2){
+					case 1:
+						mostrarProductos();
+						adicionarVentas();
+						break;
+					case 2:
+						modificarPedido();
+						break;
+					case 3:
+						cout << endl << " Introduzca id de cliente: ";
+						cin >> id;
+						reportePedidoCliente(id);
+						break;
+					case 4:
+						eliminarVentas();
+						break;
+					}
+				}while(op2!= 0);
+			}
+		case 3:
+			do{
+				cout << endl << "*	*	*	MENU DE ADICIONAR	*	*	*";
+				cout << endl << "1.- Adicionar Producto";
+				cout << endl << "2.- Adicionar Almacen";
+				cout << endl << "0.- SALIR";
+				cout << endl;
+				leer_numero("Seleccione la Opcion deseada: ",op3);
+				switch(op3){
+				case 1:
+					adicionarProductos();
+					break;
+				case 2:
+					adicionarAlmacen();
+					break;
+				}
+			}while(op3!= 0);
+			break;
+		case 4:
+			mostrarVentas();
+			break;
+		case 5:
+			do{
+				cout << endl << "*	*	*	MENU DE MOSTRAR	*	*	*";
+				cout << endl << "1.- Mostrar Productos";
+				cout << endl << "2.- Mostrar Clientes";
+				cout << endl << "3.- Mostrar Almacen";
+				cout << endl << "0.- SALIR";
+				cout << endl;
+				leer_numero("Seleccione la Opcion deseada: ",op4);
+				switch(op4){
+				case 1 :
+					mostrarProductos();
+					break;
+				case 2 :
+					mostrarClientes();
+					break;
+				case 3 :
+					mostrarAlmacen();
+					break;
+					}
+			}while(op4!= 0);
+			break;
+		case 6:
+			do{
+				cout << endl << "*	*	*	MENU DE ELIMINAR	*	*	*";
+				cout << endl << "1.- Eliminar Clientes";
+				cout << endl << "2.- Eliminar Productos";
+				cout << endl << "3.- Eliminar Ventas";
+				cout << endl << "4.- Eliminar Almacen";
+				cout << endl << "0.- SALIR";
+				leer_numero("Seleccione la Opcion deseada: ",op5);
+				switch(op5){
+				case 1 :
+					eliminarClientes();
+					break;
+				case 2 :
+					eliminarProductos();
+					break;
+				case 3 :
+					eliminarVentas();
+					break;
+				case 4 :
+					eliminarAlmacen();
+					break;
+					}
+			}while(op5!= 0);
+			break;
+		}
+	}while(opc!=0);
+}
+void leer_numero(char msg[], int& num) {
+	cout << msg;
+	cin >> num;
+	while((cin.fail())||(num<0)||(cin.fail())&&(num>0)){
+	cout<<"ERROR!Caracter no valido!";
+	cout<<endl<<msg;
+	cin.clear();
+	cin.ignore(100,'\n');
+	cin>>num;
+	}
+}
+bool VerificacionAccesoCliente(char n[30],char c[20]){
+	FILE*ptr;
+	bool k=false;
+	regcliente reg;
+	ptr=fopen("Clientes.dat","rb");
+	if(ptr!=NULL){
+		fread(&reg,sizeof(reg),1,ptr);
+		do{
+			if((strcmp(reg.usuario,n)==0) && (strcmp(reg.contra,c)==0)){
+				k = true;
+				break;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}while(!feof(ptr));
+	}
+	return(k);
+}
+bool VerifExisteIdCliente(int id){
+	FILE*ptr;
+	bool k=false;
+	regcliente reg;
+	ptr=fopen("Clientes.dat","rb");
+	if(ptr!=NULL){
+		fread(&reg,sizeof(reg),1,ptr);
+		do{
+			if(reg.idcliente==id){
+				k = true;
+				break;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}while(!feof(ptr));
+	}
+	return(k);
+}
+bool VerifExisteIdProd(int id){
+	FILE*ptr;
+	bool k=false;
+	regproducto reg;
+	ptr=fopen("Productos.dat","rb");
+	if(ptr!=NULL){
+		fread(&reg,sizeof(reg),1,ptr);
+		do{
+			if(reg.idprod==id){
+				k = true;
+				break;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}while(!feof(ptr));
+	}
+	return(k);
+}
+bool VerifExisteIdVenta(int id){
+	FILE*ptr;
+	bool k=false;
+	regventas reg;
+	ptr=fopen("Ventas.dat","rb");
+	if(ptr!=NULL){
+		fread(&reg,sizeof(reg),1,ptr);
+		do{
+			if(reg.idventa==id){
+				k = true;
+				break;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}while(!feof(ptr));
+	}
+	return(k);
+}
+void adicionarClientes(){
+	FILE *ptr;
+	regcliente reg;
+	cout << "Ingrese Nombre del Cliente: ";
+	do{
+		gets(reg.nombre);
+	}while(strlen(reg.nombre)==0);
+	cout << "Ingrese nombre de Usuario: ";
+	do{
+		gets(reg.usuario);
+	}while(strlen(reg.usuario)==0);
+	cout << "Ingrese NIT: ";
+	cin >> reg.nit;
+	cout << "Ingrese Contrasenha: ";
+	do{
+		gets(reg.contra);
+	}while(strlen(reg.contra)==0);
+	do{
+		cout << "Ingrese idcliente: ";
+		cin >> reg.idcliente;
+	}while(VerifExisteIdCliente(reg.idcliente)==true);
+	reg.estado='A';
+	ptr = fopen("Clientes.dat","ab");
+	fwrite(&reg,sizeof(reg),1,ptr);
+	fclose(ptr);
+}
+void adicionarProductos(){
+	FILE *ptr;
+	regproducto reg;
+		cout << "Ingrese Nombre: ";
+		do{
+			gets(reg.nombre);
+		}while(strlen(reg.nombre)==0||strlen(reg.nombre)>30);
+		do{
+			cout << "Ingrese id Producto: ";
+			cin >> reg.idprod;
+		}while(VerifExisteIdProd(reg.idprod)==true);
+		cout << "Ingrese Precio: ";
+		cin >> reg.precio;
+		reg.estado = 'A';
+		ptr = fopen("Productos.dat","ab");
+		fwrite(&reg,sizeof(reg),1,ptr);
+		fclose(ptr);
+}
+void adicionarVentas(){
+	FILE *ptr;
+	regventas reg;
+	cout << endl;
+	do{
+		cout << endl << "Ingrese IdVenta: ";
+		cin >> reg.idventa;
+	}while(VerifExisteIdVenta(reg.idventa)==true);
+	do{
+		cout << endl << "Ingrese IdProd: ";
+		cin >> reg.idprod;
+	}while(VerifExisteIdProd(reg.idprod)==false);
+	do{
+		cout << endl << "Ingrese IdCliente: ";
+		cin >> reg.idcliente;
+	}while(VerifExisteIdCliente(reg.idcliente)==false);
+	cout << endl << "Ingrese Cantidad: ";
+	cin >> reg.cantidad;
+	reg.estado = 'A';
+	ptr = fopen("Ventas.dat","ab");
+	fwrite(&reg,sizeof(reg),1,ptr);
+	fclose(ptr);
+}
+void adicionarAlmacen(){
+	FILE *ptr;
+	regalmacen reg;
+	do{
+		cout << endl << "Ingrese IdProd: ";
+		cin >> reg.idprod;
+	}while(VerifExisteIdProd(reg.idprod)==false);
+	cout << endl << "Ingrese Cantidad: ";
+	cin >> reg.cantidad;
+	reg.estado = 'A';
+	ptr = fopen("Almacen.dat","ab");
+	fwrite(&reg,sizeof(reg),1,ptr);
+	fclose(ptr);
+}
+void mostrarClientes(){
+	FILE *ptr;
+	regcliente reg;
+	ptr = fopen("Clientes.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existe ";
+	}else{
+		cout << endl << "---------------------------------------";
+		cout << endl << "********	CLIENTES	********";
+		cout << endl << "---------------------------------------";
+		cout << endl <<"IdCliente"<<setw(8)<<"Nit"<<setw(15)<<"Nombre";
+		cout << endl << "---------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.estado=='A'){
+			cout << endl <<setw(5)<<reg.idcliente<<setw(15)<<reg.nit<<setw(18)<<reg.nombre;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		cout << endl << "---------------------------------------";
+	}
+	fclose(ptr);
+}
+void mostrarProductos(){
+	FILE *ptr;
+	regproducto reg;
+	ptr = fopen("Productos.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existe ";
+	}else{
+		cout << endl << "---------------------------------------";
+		cout << endl << "********	PRODUCTOS	********";
+		cout << endl << "---------------------------------------";
+		cout << endl <<"IdProd"<<setw(15)<<"Nombre"<<setw(18)<<"Precio";
+		cout << endl << "---------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.estado == 'A'){
+			cout << endl <<setw(5)<<reg.idprod<<setw(20)<<reg.nombre<<setw(12)<<reg.precio;
+			fread(&reg,sizeof(reg),1,ptr);
+			}else{
+				fread(&reg,sizeof(reg),1,ptr);
+			}
+		}
+		cout << endl << "---------------------------------------";
+	}
+	fclose(ptr);
+}
+void mostrarVentas(){
+	FILE *ptr;
+	regventas reg;
+	ptr = fopen("Ventas.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existe ";
+	}else{
+		cout << endl << "---------------------------------------";
+		cout << endl << "********	VENTAS	********";
+		cout << endl << "---------------------------------------";
+		cout << endl <<"IdVenta"<<setw(15)<<"Id Cliente"<<setw(10)<<"Id Prod"<<setw(10)<<"Cantidad";
+		cout << endl << "---------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.estado == 'A'){
+			cout << endl <<setw(5)<<reg.idventa<<setw(15)<<reg.idcliente<<setw(10)<<reg.idprod<<setw(10)<<reg.cantidad;
+			fread(&reg,sizeof(reg),1,ptr);
+			}else{
+				fread(&reg,sizeof(reg),1,ptr);
+			}
+		}
+		cout << endl << "---------------------------------------";
+	}
+	fclose(ptr);
+}
+void mostrarAlmacen(){
+	FILE *ptr;
+	regalmacen reg;
+	ptr = fopen("Almacen.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existe ";
+	}else{
+		cout << endl << "---------------------------------------";
+		cout << endl << "********	ALMACEN	********";
+		cout << endl << "---------------------------------------";
+		cout << endl <<"IdProd"<<setw(20)<<"Cantidad";
+		cout << endl << "---------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.estado = 'A'){
+			cout << endl <<setw(5)<<reg.idprod<<setw(10)<<reg.cantidad;
+			fread(&reg,sizeof(reg),1,ptr);
+			}else{
+			fread(&reg,sizeof(reg),1,ptr);
+			}
+		}
+		cout << endl << "---------------------------------------";
+	}
+	fclose(ptr);
+}
+void eliminarClientes(){
+	int cont=0;
+	int id;
+	FILE *ptr;
+	regcliente reg;
+	cout<<"Ingresar el id de cliente que quiere quitar de la lista: ";
+	cin >> id;
+	ptr=fopen("Clientes.dat","r+b");
+	if(ptr==NULL){
+		cout<<endl<<"Archivo inexistente.....";
+	}else{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idcliente!=id){
+				cont++;
+				fread(&reg,sizeof(reg),1,ptr);
+			}
+			reg.estado='N';
+		fseek(ptr,cont*sizeof(reg), SEEK_SET);
+		fwrite(&reg,sizeof(reg),1,ptr);
+		fread(&reg,sizeof(reg),1,ptr);
+		}
+	}
+	fclose(ptr);
+}
+void eliminarProductos(){
+	int cont=0;
+	int id;
+	FILE*ptr;
+	regproducto reg;
+	cout<<"Ingresar el Id Prod que quiere quitar de la lista: ";
+	cin >> id;
+	ptr=fopen("Productos.dat","r+b");
+	if(ptr==NULL){
+		cout<<endl<<"Archivo inexistente.....";
+	}else{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idprod!=id){
+				cont++;
+				fread(&reg,sizeof(reg),1,ptr);
+			}
+			reg.estado='N';
+			fseek(ptr,cont*sizeof(reg), SEEK_SET);
+			fwrite(&reg,sizeof(reg),1,ptr);
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+}
+void eliminarAlmacen(){
+	int cont=0;
+	int id;
+	FILE *ptr;
+	regalmacen reg;
+	cout << endl << "Ingresar el id de Prod que desea quitar de la lista: ";
+	cin >> id;
+	ptr=fopen("Almacen.dat","r+b");
+	if(ptr==NULL){
+		cout<<endl<<"Archivo inexistente.....";
+	}else{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idprod!=id){
+			cont++;
+			fread(&reg,sizeof(reg),1,ptr);
+			}
+		reg.estado='N';
+		fseek(ptr,cont*sizeof(reg),SEEK_SET);
+		fwrite(&reg,sizeof(reg),1,ptr);
+		fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+}
+void eliminarVentas(){
+	int cont=0;
+	int id;
+	FILE*ptr;
+	regventas reg;
+	cout << endl << "Ingresar el id de Venta que desea quitar de la lista: ";
+	cin >> id;
+	ptr=fopen("Ventas.dat","r+b");
+	if(ptr==NULL){
+		cout<<endl<<"Archivo inexistente.....";
+	}else{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idventa!=id){
+			cont++;
+			fread(&reg,sizeof(reg),1,ptr);
+			}
+			reg.estado='N';
+			fseek(ptr,cont*sizeof(reg), SEEK_SET);
+			fwrite(&reg,sizeof(reg),1,ptr);
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+}
+int buscarRegistro(int id, int prod){
+	FILE *ptr;
+	regventas reg;
+	int pos;	
+	ptr = fopen("Ventas.dat","rb");
+	fseek(ptr,0,SEEK_SET);
+	fread(&reg,sizeof(reg),1,ptr);
+	pos = 0;
+	while(!feof(ptr) && reg.idcliente!=id && reg.idprod!=prod){
+		pos++;
+		fread(&reg,sizeof(reg),1,ptr);
+	}
+	fclose(ptr);
+	if (reg.idcliente==id && reg.idprod==prod)
+		return pos;
+	else
+		return -1; // No existe
+}
+void modificarPedido(){
+	FILE*ptr;
+	int id,id2;
+	regventas regI;
+	cout << endl;
+	do{
+		cout << endl << "Ingrese el id de cliente: ";
+		cin >> id;
+	}while(VerifExisteIdCliente(id)==false);
+	do{
+		cout << endl << "Ingrese el id de Prod que pidio: ";
+		cin >>id2;
+	}while(VerifExisteIdProd(id2)==false);
+	int pos = buscarRegistro(id,id2);
+	ptr = fopen("Ventas.dat","r+b");
+	if(ptr == NULL){
+		cout << endl << "ERROR...Archivo no Existe ";
+	}else{
+		fseek(ptr, pos*sizeof(regI), SEEK_SET);
+			fread(&regI, sizeof(regI), 1, ptr);
+			if(regI.estado=='A'){
+				if (pos >= 0){
+				fseek(ptr, pos*sizeof(regI), SEEK_SET);
+				fread(&regI, sizeof(regI), 1, ptr);
+				cout << endl << "Id Venta Actual: " << regI.idventa << endl;
+					cout << endl << "Ingrese Nuevo Id Venta: ";
+					cin >> regI.idventa;
+				cout << endl << "Id Prod Actual: " << regI.idprod << endl;
+					cout << endl << "Ingrese Nuevo Id Prod:";
+					cin >> regI.idprod;
+				cout << endl << "Id Cliente Actual: " << regI.idcliente << endl;
+					cout << endl << "Ingrese Nuevo Id Cliente: ";
+					cin >> regI.idcliente;
+				cout << endl << "Cantidad Actual: " << regI.cantidad << endl;
+				cout << endl << "Ingrese Nueva Cantidad: ";
+				cin >> regI.cantidad;
+				fseek(ptr, pos*sizeof(regI), SEEK_SET);
+				fwrite(&regI,sizeof(regI),1,ptr);
+				}
+			}else{
+				cout << endl << "Sin Datos o eliminado....";
+			}
+	}
+	fclose(ptr);	
+}
+int obtenerPrecio(int id){
+	FILE *ptr;
+	regproducto reg;
+	float S=0;
+	ptr = fopen("Productos.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existente";
+	}else{
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idprod == id){
+				S = reg.precio;
+			}
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+	return(S);
+}
+void reportePedidoCliente(int id){
+	FILE *ptr;
+	regventas reg;
+	int S = 0;
+	int precio;
+	ptr = fopen("Ventas.dat","rb");
+	if(ptr == NULL){
+		cout << "ERROR...Archivo no Existe ";
+	}else{
+		cout << endl << "-------------------------------------------------------------------";
+		cout << endl << "		********	VENTAS	********			";
+		cout << endl << "-------------------------------------------------------------------";
+		cout << endl << setw(15) <<"De Usuario: "<<id;
+		cout << endl << "-------------------------------------------------------------------";
+		cout << endl <<"IdVenta"<<setw(10)<<"Id Prod"<<setw(12)<<"Cantidad"<<setw(12)<<"Precio"<<setw(12)<<"Total";
+		cout << endl << "-------------------------------------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+			if(reg.idcliente == id && reg.estado == 'A'){
+			precio = obtenerPrecio(reg.idprod);
+			cout << endl <<setw(5)<<reg.idventa<<setw(10)<<reg.idprod<<setw(10)<<reg.cantidad<<setw(15)<<precio<<setw(10)<<reg.cantidad*precio;
+			S = S + reg.cantidad*precio;
+			fread(&reg,sizeof(reg),1,ptr);
+			}else{
+				fread(&reg,sizeof(reg),1,ptr);
+		
+			}
+		}
+		cout << endl << "--------------------------------------------------------------------";
+		cout << endl << setw(20) << S;
+	}
+	fclose(ptr);
+}
